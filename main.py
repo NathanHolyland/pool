@@ -107,18 +107,17 @@ def collisionDetection(ball1, ball2):
 
 
 def collisionResponse(balls):
-    # excluded = []
+    excluded = []
     for i in balls:
         for j in balls:
             if i != j:
-                # for x in excluded:
-                #    if x == j or i == x:
-                #        continue
-                # excluded.append(i)
+                comparison = {i, j}
+                if comparison in excluded:
+                    continue
+                excluded.append(comparison)
                 collided, magnitude = collisionDetection(i, j)
                 if collided:
                     print(collided)
-                if collided:
                     vector = i.vectorTo(j.center).unit()
                     vector = vector.multiply(-magnitude)
                     i.translate(vector)
@@ -171,7 +170,7 @@ def applyFriction(balls):
 
 
 bList = []
-cue = Ball((1500, 510), 32, 30, (255, 255, 255), [0, 0])
+cue = Ball((100, 800), 32, 30, (255, 255, 255), [0, 0])
 bList.append(cue)
 
 for i in range(5):
