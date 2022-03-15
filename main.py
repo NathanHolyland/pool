@@ -1,7 +1,7 @@
 import math
 import pygame
 import time
-resolution = [1600, 900]
+resolution = [800, 800]
 screen = pygame.display.set_mode(resolution)
 
 
@@ -53,7 +53,7 @@ class Ball:
         self.radius = radius
         self.mass = mass
         self.velocity = Vector(Velocity[0], Velocity[1])
-        self.friction = 0.001
+        self.friction = 0.002
         self.colour = colour
 
     def translate(self, v):
@@ -163,38 +163,38 @@ def applyFriction(balls):
         acceleration = unit.multiply(acceleration)
         newVelocity = ball.velocity.add(acceleration)
         if newVelocity.magnitude() > ball.velocity.magnitude():
-            ball.velocity = ball.velocity.multiply(0.7)
-            print("True")
+            ball.velocity = Vector(0, 0)
         else:
             ball.velocity = newVelocity
 
 
 bList = []
-cue = Ball((100, 800), 32, 30, (255, 255, 255), [0, 0])
+cue = Ball((700, 350), 29, 29, (255, 255, 255), [0, 0])
 bList.append(cue)
 
-for i in range(5):
-    x = 100
-    y = 230+(i*65)
-    new = Ball((x, y), 30, 30, (255, 0, 0), [0, 0])
-    bList.append(new)
+for j in range(5):
+    for i in range(5-j):
+        x = 100+j*50
+        y = 230+(j*30)+(i*60)
+        new = Ball((x, y), 30, 30, (255, 0, 0), [0, 0])
+        bList.append(new)
 
 running = True
 while running:
     screen.fill((0, 160, 50))
     keys = pygame.key.get_pressed()
-    # applyFriction(bList)
+    applyFriction(bList)
     update(bList)
     collisionResponse(bList)
 
     if keys[pygame.K_w]:
-        bList[0].changeVel(Vector(0, -0.01))
+        bList[0].changeVel(Vector(0, -0.02))
     if keys[pygame.K_s]:
-        bList[0].changeVel(Vector(0, 0.01))
+        bList[0].changeVel(Vector(0, 0.02))
     if keys[pygame.K_d]:
-        bList[0].changeVel(Vector(0.01, 0))
+        bList[0].changeVel(Vector(0.02, 0))
     if keys[pygame.K_a]:
-        bList[0].changeVel(Vector(-0.01, 0))
+        bList[0].changeVel(Vector(-0.02, 0))
     if keys[pygame.K_SPACE]:
         bList[0].brake()
 
