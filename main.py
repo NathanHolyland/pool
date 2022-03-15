@@ -82,7 +82,9 @@ def collisionDetection(ball1, ball2):
     if distance < (ball1.radius + ball2.radius):
         magnitude = (ball1.radius+ball2.radius) - distance
         return True, magnitude
+    return False, 0
 
+def wallCheck(ball1, resolution):
     center = ball1.center.vec()
     radius = ball1.radius
     velocity = ball1.velocity.vec()
@@ -103,12 +105,12 @@ def collisionDetection(ball1, ball2):
         ball1.translate(Vector(0, depth))
         velocity[1] = velocity[1] * -1
     ball1.velocity = Vector(velocity[0], velocity[1])
-    return False, 0
 
 
 def collisionResponse(balls):
     excluded = []
     for i in balls:
+        wallCheck(i, resolution)
         for j in balls:
             if i != j:
                 comparison = {i, j}
@@ -117,7 +119,6 @@ def collisionResponse(balls):
                 excluded.append(comparison)
                 collided, magnitude = collisionDetection(i, j)
                 if collided:
-                    print(collided)
                     vector = i.vectorTo(j.center).unit()
                     vector = vector.multiply(-magnitude)
                     i.translate(vector)
